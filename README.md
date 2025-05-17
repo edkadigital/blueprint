@@ -1,4 +1,4 @@
-# ClusterOne
+# Blueprint for Edka Kubernetes Cluster
 
 Blueprint for an [Edka](https://edka.io) Kubernetes cluster. For usage details, see the [docs](https://docs.edka.io/get-started/build-your-own-paas).
 
