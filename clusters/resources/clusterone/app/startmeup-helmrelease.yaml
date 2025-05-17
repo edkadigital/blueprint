@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: startmeup          # Name of the HelmRelease object
+  namespace: production    # Namespace where the application will be deployed
+spec:
+  interval: 5m             # Reconciliation interval for the HelmRelease
+  chart:
+    spec:
+      chart: startmeup     # Name of the Helm chart
+      version: ">=0.0.1"   # Use the latest available version (or pin to a specific one)
+      sourceRef:
+        kind: HelmRepository
+        name: edka         # Assumes a HelmRepository named 'edka' exists
+        namespace: flux-system      # Namespace where the HelmRepository is located
+      interval: 1m                  # How often to check for new chart versions
+  upgrade:
+    remediation:
+      remediateLastFailure: true    # Attempt to fix failed upgrades
+  test:
+    enable: true                    # Run Helm tests after deployment/upgrade

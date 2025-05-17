@@ -1,0 +1,20 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: startmeup      # Unique name for this Kustomization object
+  namespace: flux-system  # Namespace where this Kustomization object itself resides
+spec:
+  dependsOn:
+    # Ensures that the External Secrets Operator and its Doppler integration are ready
+    - name: cluster-secrets-store
+    # Ensures that PostgreSQL is set up and ready before attempting to deploy the app
+    - name: postgres-cluster
+  interval: 5m # How often Flux reconciles this Kustomization
+  retryInterval: 2m
+  timeout: 5m # Max time to wait for all resources to become ready
+  wait: true  # Wait for all resources defined in the path to be ready
+  path: "./clusters/resources/clusterone/app" # Path to the application's manifests
+  prune: true # Delete resources removed from the Git repository path
+  sourceRef:
+    kind: GitRepository
+    name: flux-system # Refers to the GitRepository object for your main GitOps repo
